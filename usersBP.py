@@ -3,10 +3,10 @@ from flask_sqlalchemy import SQLAlchemy
 import uuid
 
 db = SQLAlchemy()
-movies_bp = Blueprint('movies',__name__)
-
+users_bp = Blueprint('users_bp',__name__)
+UserData = []
 class User(db.Model):
-    __tablename__ = "users"
+    __tablename__ = "users2"
     id = db.Column(db.String(50), primary_key=True, default=lambda: str(uuid.uuid4()))
     first_name = db.Column(db.String(100))
     last_name = db.Column(db.String(100))
@@ -31,8 +31,13 @@ class User(db.Model):
     
 
 #Lets do get users
-@movies_bp.get("/")
+@users_bp.get("/")
 def get_users():
     allUsers = User.query.all()  # Select * from movies | movie_list iterator
-    data = [user.to_dict() for user in allUsers]  # list of dictionaries
-    return jsonify(data)
+    UserData = [user.to_dict() for user in allUsers]  # list of dictionaries
+    return jsonify(UserData)
+
+def get_users_list():
+    allUsers = User.query.all()  # Select * from movies | movie_list iterator
+    UserData = [user.to_dict() for user in allUsers]  # list of dictionaries
+    return UserData

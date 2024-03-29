@@ -160,7 +160,7 @@
                 <img class="profilePicture"
                     src="https://profilemagazine.com/wp-content/uploads/2020/04/Ajmere-Dale-Square-thumbnail.jpg"
                     alt="">
-                <p class="name">{{user.name}}</p>
+                <p class="name">{{user.first_name}} {{user.last_name}}</p>
                 <div class="boxes">
                     <p class="box">
                         C{{user.id}}
@@ -169,9 +169,9 @@
                         Active client
                     </p>
                 </div>
-                <p class="pNomarl" style="text-decoration-line: underline;">irdramsey@nimon.com</p>
-                <p class="pNomarl">+27 072 145 0898</p>
-                <p class="address">6162 Rutherford Fields, Apt. 809, 95589, New Vincenza, Georgia, South Africa</p>
+                <p class="pNomarl" style="text-decoration-line: underline;">{{user.email}}</p>
+                <p class="pNomarl">{{user.phone}}</p>
+                <p class="address">{{user.address}}</p>
                 <p class="name">Client's Policies</p>
                 <div class="policies">
                     <div class="policyDiv">
@@ -193,12 +193,6 @@
                 </div>
             </div>
             {% endfor %}
-            <div class="client">
-
-            </div>
-            <div class="client">
-
-            </div>
         </div>
     </section>
 </body>
