@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            height: 100vh;
+            margin-top: 20px;
+            margin-bottom: 20px;
+            font-family: Roboto;
+        }
+        .client {
+            text-align: center;
+        }
+
+        .profilePicture {
+            border-radius: 50%;
+            width: 250px;
+            /* Adjust the size as needed */
+            /* Adjust the size as needed */
+            object-fit: cover;
+            display: block;
+            margin: 0 auto;
+            /* Center the image horizontally */
+        }
+
+        .name {
+            font-size: 25px;
+            font-weight: bold;
+            font-family: Roboto;
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+
+        .boxes {
+            display: flex;
+            justify-content: center;
+        }
+
+        .box {
+            color: white;
+            background: #26A69A;
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+
+        .active {
+            background-color: #D9D9D9;
+        }
+        .policies{
+            display: flex;
+        }
+        .policy{
+            width: 200px;
+            height: 200px;
+            flex-shrink: 0;
+            border-radius: 10px;
+            border: 2px solid #DADADA;
+            background: #FFF;
+            box-shadow: 0px 0px 10.3px 0px rgba(0, 0, 0, 0.25);
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <section>
+        <div class="client">
+            <img class="profilePicture"
+                src="https://profilemagazine.com/wp-content/uploads/2020/04/Ajmere-Dale-Square-thumbnail.jpg" alt="">
+            <p class="name">{{user.first_name}} {{user.last_name}}</p>
+            <p></p>
+            <div class="boxes">
+                <p class="box">
+                    C{{ user.id}}
+                </p>
+                <p class="box" style="background: #D9D9D9;">
+                    Active client
+                </p>
+            </div>
+            <p class="pNomarl" style="text-decoration-line: underline;">{{user.email}}</p>
+            <p class="pNomarl">{{user.phone}}</p>
+            <p class="address">{{user.address}}</p>
+        </div>
+        <div>
+            <h1 style="text-align: center;">Client's Policies</h1>
+        </div>
+        <div class="policies">
+            <div class="policy">
+
+            </div>
+            <div class="policy">
+
+            </div>
+            <div class="policy">
+
+            </div>
+            <div class="policy">
+
+            </div>
+        </div>
+    </section>
+
+</body>
+
+</html>
