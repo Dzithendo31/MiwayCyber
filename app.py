@@ -10,6 +10,7 @@ import json
 from usersBP import users_bp, db, get_users_list
 from userslistBP import users_list_bp
 from policyBP import policy_bp
+from adminBP import adminBP
 load_dotenv()  # load -> os env (environmental variables
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.environ.get("FORM_SECRET_KEY")
@@ -30,16 +31,11 @@ except Exception as e:
 app.register_blueprint(users_bp, url_prefix = "/users") 
 app.register_blueprint(users_list_bp, url_prefix = "/usersList") 
 app.register_blueprint(policy_bp, url_prefix = "/policies") 
+app.register_blueprint(adminBP, url_prefix = "/admin") 
 @app.route("/")
 def hello_world():
     return "<p>Hddsddqq, 🥹</p>"
 
-@app.route("/admin")
-def admin_page():
-    #Get the users list
-    users = get_users_list()
-    print(users)
-    return render_template("admin.html",users=users)
 
 @app.get('/users/<id>')
 def get_user(id):

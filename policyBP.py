@@ -5,7 +5,8 @@ from usersBP import db
 
 
 policy_bp = Blueprint('policy_bp',__name__)
-UserData = []
+
+
 class Policy(db.Model):
     __tablename__ = "policies"
     id = db.Column(db.String(50), primary_key=True, default=lambda: str(uuid.uuid4()))
@@ -13,6 +14,7 @@ class Policy(db.Model):
     description = db.Column(db.String(100))
     basePremium = db.Column(db.String(100))  # Assuming you meant "date of birth"
     baseCoverage = db.Column(db.String(100))
+    pictureURL = db.Column(db.String(100))
 
     # JSON - Keys
     def to_dict(self):
@@ -21,12 +23,19 @@ class Policy(db.Model):
             "name": self.name,
             "description": self.description,
             "basePremium": self.basePremium,
-            "basCoverage": self.baseCoverage,
+            "baseCoverage": self.baseCoverage,
+            "pictureURL": self.pictureURL
         }
     
 #Lets do get users
 @policy_bp.get("/")
-def get_users():
+def get_policies():
     allPolicy = Policy.query.all()  # Select * from movies | movie_list iterator
     data = [policy.to_dict() for policy in allPolicy]  # list of dictionaries
     return jsonify(data)
+
+
+def get_policies_list():
+    allPolicy = Policy.query.all()  # Select * from movies | movie_list iterator
+    data = [policy.to_dict() for policy in allPolicy]  # list of dictionaries
+    return data

@@ -10,141 +10,7 @@
         rel="stylesheet">
     <meta name="viewport" content="width=S, initial-scale=1.0">
     <title>Document</title>
-    <style>
-        .cont {
-            margin: 10px 50px;
-            font-family: Roboto;
-        }
-
-        .header {
-            display: flex;
-            align-items: baseline;
-
-        }
-
-        h1 {
-            color: #E0004D;
-            font-size: 96px;
-            font-style: normal;
-            font-weight: 700;
-            line-height: normal;
-            letter-spacing: -2.88px;
-            margin: 0;
-        }
-
-        .clientsNo {
-            border-radius: 8px;
-            border: 2px solid #26A69A;
-            display: inline;
-            padding: 1px 5px;
-            font-size: 15px;
-            font-style: normal;
-            font-weight: 700;
-            line-height: normal;
-            letter-spacing: -0.45px;
-            color: #26A69A;
-        }
-
-        .clients {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-        }
-
-        .client {
-            width: 253px;
-            flex-shrink: 0;
-            border-radius: 10px;
-            border: 2px solid #DADADA;
-            background: #FFF;
-            box-shadow: 0px 0px 10.3px 0px rgba(0, 0, 0, 0.25);
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .profilePicture {
-            width: 80px;
-            border-radius: 50%;
-        }
-
-        .name {
-            text-align: center;
-            font-size: 20px;
-            font-style: normal;
-            font-weight: 700;
-            color: #1E1E1E;
-            margin: 7px;
-        }
-
-        .boxes {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .box {
-            width: 89px;
-            height: 25px;
-            border-radius: 5px;
-            background: #26A69A;
-            margin: 0px 3px;
-            padding: 2px 10px;
-            font-size: 12px;
-            font-style: normal;
-            font-weight: 600;
-            line-height: normal;
-            color: #FFF;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-
-        .pNomarl {
-            margin: 5px 0px;
-            font-size: 15px;
-            color: #2B2B2B;
-        }
-
-        .address {
-            color: #2B2B2B;
-            text-align: center;
-            font-size: 10px;
-            margin: 0px 18px;
-        }
-
-        .policies {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            justify-content: center;
-            align-content: center;
-            align-items: flex-start;
-        }
-
-        .policy {
-            background-color: #E0004D;
-            color: white;
-            border-radius: 5px;
-            padding: 5px 4px;
-            margin: 3px 3px;
-        }
-
-        .buttons {
-            display: flex;
-        }
-
-        .button {
-            border: 2px solid #898989;
-            padding: 10px 20px;
-            cursor: pointer;
-            border-radius: 10px;
-            color: #2B2B2B;
-            margin: 10px 8px;
-            text-decoration: none;
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 </head>
 
 <body>
@@ -174,25 +40,48 @@
                 <p class="address">{{user.address}}</p>
                 <p class="name">Client's Policies</p>
                 <div class="policies">
+                    {% for policy in policies %}
                     <div class="policyDiv">
-                        <p class="policy">Cyber Security Plus</p>
+                        <p class="policy">{{policy.name}}</p>
                     </div>
-                    <div class="policyDiv">
-                        <p class="policy">Cyber Plus</p>
-                    </div>
-                    <div class="policyDiv">
-                        <p class="policy">Cyber Plus</p>
-                    </div>
-                    <div class="policyDiv">
-                        <p class="policy">Cyber Plus</p>
-                    </div>
+                    {% endfor %}
                 </div>
                 <div class="buttons">
-                    <a href="/usersList/{{ user.id }}" class="button">View</a>
+                    <a href="/admin/{{ user.id }}" class="button">View</a>
                 </div>
             </div>
             {% endfor %}
         </div>
+        <div class="buttons">
+            <a href="/admin/addUser" class="button">+ add New User</a>
+        </div>
+    </section>
+    <section class="cont">
+        <div class="header">
+            <h1>Policies</h1>
+            <p class="clientsNo">{{policies|length}}</p>
+        </div>
+        <div class="policies2">
+            {% for policy in policies %}
+            <div class="policy2">
+                <div>
+                    <img class="policyImg" src={{policy.pictureURL}} alt="">
+                </div>
+                <div style="padding: 10px;">
+                    <p class="name">{{policy.name}}</p>
+                    <p class="address">{{policy.description}}</p>
+
+                    <p class="fromPrice">from</p>
+                    <p class="price">R{{policy.basePremium}}</p>
+                    <p class="fromPrice">Coverage starts at R{{policy.baseCoverage}}</p>
+                </div>
+                <div class="buttons">
+                    <a href="" class="button">View</a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
     </section>
 </body>
 
