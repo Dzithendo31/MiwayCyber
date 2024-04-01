@@ -58,11 +58,19 @@ def create_user():
 
     new_user = User(**new_user_data)
     try:
-      print('Tryign to addddd')
       db.session.add(new_user)
       db.session.commit()
-      print('doneeeeeeeeee???')
-      return "<h1>Movie added Successfully</h1>"
+      message ={
+          "message":"User Added Successfully.",
+          "success":True,
+          "data":new_user_data
+      }
+      return render_template("success.html",message=message)
     except Exception as e:
         db.session.rollback()
-        return f"<h1>Error adding Movie: {str(e)}</h1>"
+        message ={
+          "message":"Error Adding User to DB.",
+          "success":False,
+          "data":str(e)
+      }
+        return render_template("success.html",message=message)

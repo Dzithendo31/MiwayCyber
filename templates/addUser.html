@@ -27,18 +27,18 @@
 
 <body>
     <div class="cont">
-        <form class="addUser" action="{{ url_for('adminBP.create_user') }}">
+        <form class="addUser" action="{{ url_for('adminBP.create_user') }}" method="POST">
             <div>
                 <h1>Add New Customer</h1>
                 <p class="clientsNo">Fill out all required fields to create a new customer</p>
             </div>
             <div class="mb-3">
                 <label for="exampleFormControlInput1" class="form-label">First Name</label>
-                <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="James">
+                <input type="text" class="form-control" name="first_name" placeholder="James">
             </div>
             <div class="mb-3">
                 <label for="exampleFormControlInput1" class="form-label">Last Name</label>
-                <input type="text" class="form-control" name="first_name" placeholder="Khumalo">
+                <input type="text" class="form-control" name="last_name" placeholder="Khumalo">
             </div>
             <div class="mb-3">
                 <label for="exampleFormControlInput1" class="form-label">Date of Birth</label>
