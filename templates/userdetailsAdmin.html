@@ -46,8 +46,8 @@
         }
 
         .box {
-            color: white;
-            background: #26A69A;
+            color: #26a69a;
+            border: #26a69a solid 3px;
             padding: 10px;
             margin: 5px;
             border-radius: 5px;
@@ -74,6 +74,20 @@
             flex-direction: column;
             align-items: center;
         }
+        .button {
+            background-color: #e0004d;
+            padding: 10px 20px;
+            cursor: pointer;
+            border-radius: 10px;
+            color: #ffffff;
+            margin: 10px 8px;
+            text-decoration: none;
+            transition: background-color 0.3s ease; /* Add smooth transition */
+        }
+        
+        .button:hover {
+            background-color: #ff88a6; /* Change background color on hover */
+        }
     </style>
 </head>
 
@@ -88,17 +102,21 @@
                 <p class="box">
                     C{{ user.id}}
                 </p>
-                <p class="box" style="background: #D9D9D9;">
+                <p class="box">
                     Active client
                 </p>
             </div>
             <p class="pNomarl" style="text-decoration-line: underline;">{{user.email}}</p>
             <p class="pNomarl">{{user.phone}}</p>
             <p class="address">{{user.address}}</p>
+            <div class="buttons">
+                <a href="" class="button">Apply for New Policy</a>
+            </div>
         </div>
         <div>
             <h1 style="text-align: center;">Client's Policies</h1>
         </div>
+        
         <div class="policies">
             <div class="policy">
 

@@ -1,11 +1,62 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
-</body>
-</html>
+{% extends "base.html" %}
+
+{% block title %}MiWayCyber{% endblock %}
+<style>
+
+</style>
+{% block content %}
+<div class="landing">
+    <div class="words">
+        <p class="pwelcome">Welcome to MiwayCyber</p>
+        <p class="wordsLand">Insurance coverage to digital assets such as cryptocurrencies, digital identity, and data
+            privacy. </p>
+        <div>
+            <button class="btn btn-primary" style="background-color: #e0004d; /* Green */
+                border-color: #e0004d;">Get a Quote</button>
+            <button class="btn btn-primary">Register</button>
+        </div>
+
+    </div>
+    <div class="image">
+        <img class="person"
+            src="https://smallbizclub.com/wp-content/uploads/2021/07/bigstock-Serious-Business-Man-Trader-An-394931603.jpg"
+            alt="">
+    </div>
+</div>
+<div class="aboutUS">
+    <div class="image2">
+        <div class="service">
+            <i class="fa-brands fa-bitcoin fa-3x" style="color: #e0004d;"></i>
+            <h6 class="hgservices">Digital Asset Protection</h6>
+            <p class="pservices">Insurance coverage for digital assets such as cryptocurrencies, digital tokens, and virtual currencies against theft, unauthorized access, or damage</p>
+        </div>
+        <div class="service" style="background-color: #e0004d;">
+            <i class="fa-solid fa-fingerprint fa-3x" style="color: #ecebeb;"></i>
+            <h6 class="hgservices" style="color: #ecebeb;">Digital Identity Protection</h6>
+            <p class="pservices" style="color: #ecebeb;" >Insurance coverage for financial losses resulting from identity theft in digital spaces, including unauthorized use of personal information for fraudulent activities</p>
+        </div>
+        <div class="service">
+            <i class="fa-solid fa-user-shield fa-3x" style="color: #e0004d;"></i>
+            <h6 class="hgservices">Data Privacy Insurance</h6>
+            <p class="pservices">Insurance coverage for liabilities arising from data breaches, violations of privacy laws and regulations, and cyber-attacks targeting sensitive information</p>
+        </div>
+        <div class="service">
+            <i class="fa-solid fa-magnifying-glass fa-3x" style="color: #e0004d;"></i>
+            <h6 class="hgservices">Assess Risk and Underwriting</h6>
+            <p class="pservices">Thorough risk assessment and underwriting services to evaluate the level of risk associated with insuring digital assets, digital identity, and data privacy.</p>
+        </div>
+        
+
+    </div>
+    <div class="words2">
+        <p class="serviceTitle"><span><i class="fa-solid fa-arrow-left fa-0.5x"></i></span> Our Services</p>
+        <div class="para">
+            <p class="paraServices">We offer these comprehensive services, with the aim to support individuals and organizations in effectively managing the financial risks associated with digital assets, digital identity, and data privacy in today's interconnected and data-driven business environment.</p>
+        </div>
+        <div class="imgs">
+            <img style="width: 250px;" src="https://th.bing.com/th/id/R.890eef73dc8197e12bcefa4b46bb69f9?rik=75%2bPnFWOL6Z7oA&pid=ImgRaw&r=0" alt="">
+        </div>
+    </div>
+</div>
+
+{% endblock %}
