@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}MiWayCyber{% endblock %}
+{% block content %}
+<form method="POST" action="">
+    {{ form.hidden_tag() }}
+
+    {% if form.firstname.errors %}
+        {% for error in form.firstname.errors %}
+            <div style="color: crimson;">{{ error }}</div>
+        {% endfor %}
+    {% endif %}
+    <div class="form-group">
+        {{ form.firstname.label }}:{{ form.firstname(placeholder="First Name", class="form-control") }}
+        <br>
+    </div>
+
+    {% if form.lastname.errors %}
+        {% for error in form.lastname.errors %}
+            <div style="color: crimson;">{{ error }}</div>
+        {% endfor %}
+    {% endif %}
+    <div class="form-group">
+        {{ form.lastname.label }}:{{ form.lastname(placeholder="Last Name", class="form-control") }}
+        <br>
+    </div>
+
+    {% if form.password.errors %}
+        {% for error in form.password.errors %}
+            <div style="color: crimson;">{{ error }}</div>
+        {% endfor %}
+    {% endif %}
+    <div class="form-group">
+        {{ form.password.label }}:{{ form.password(placeholder="Password", class="form-control") }}
+        <br>
+    </div>
+
+    {{ form.submit(class="btn btn-primary") }}
+</form>
+{% endblock %}

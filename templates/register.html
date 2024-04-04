@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}MiWayCyber{% endblock %}
+{% block content %}
+<h1>Register New User</h1>
+<form method="POST" action="">
+    {{ form.hidden_tag() }}
+
+    {% for field in form %}
+        {% if field.errors %}
+            {% for error in field.errors %}
+                <div style="color: crimson;">{{ error }}</div>
+            {% endfor %}
+        {% endif %}
+        
+        {{ field.label }}: {{ field(placeholder=field.label.text) }}
+        <br>
+    {% endfor %}
+
+    {{ form.submit() }}
+</form>
+{% endblock %}

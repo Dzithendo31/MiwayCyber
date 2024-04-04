@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request, render_template, Blueprint
 from flask_sqlalchemy import SQLAlchemy
 import uuid
-from usersBP import db
+from extensions import db
 
 
 policy_bp = Blueprint('policy_bp',__name__)

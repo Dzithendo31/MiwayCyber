@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request, render_template, Blueprint
 from flask_sqlalchemy import SQLAlchemy
-from usersBP import User, db
+from models.user import User
+from extensions import db
 from policyBP import Policy
 
 

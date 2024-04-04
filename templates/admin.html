@@ -1,96 +1,80 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
-        rel="stylesheet">
-    <meta name="viewport" content="width=S, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
-</head>
-
-<body>
-
-    <section class="cont">
-        <div class="header">
-            <h1>Clients</h1>
-            <p class="clientsNo">{{users|length}}</p>
-        </div>
-        <div class="clients">
-            {% for user in users %}
-            <div class="client">
-                <img class="profilePicture"
-                    src="https://profilemagazine.com/wp-content/uploads/2020/04/Ajmere-Dale-Square-thumbnail.jpg"
-                    alt="">
-                <p class="name">{{user.first_name}} {{user.last_name}}</p>
-                <div class="boxes">
-                    <p class="box">
-                        C{{ user.id}}
-                    </p>
-                    <p class="box" style="background: #D9D9D9;">
-                        Active client
-                    </p>
-                </div>
-                <p class="pNomarl" style="text-decoration-line: underline;">{{user.email}}</p>
-                <p class="pNomarl">{{user.phone}}</p>
-                <p class="address">{{user.address}}</p>
-                <p class="name">Client's Policies</p>
-                <div class="policies">
-                    {% for policy in policies %}
-                    <div class="policyDiv">
-                        <p class="policy">{{policy.name}}</p>
-                    </div>
-                    {% endfor %}
-                </div>
-                <div class="buttons">
-                    <a href="/admin/{{ user.id }}" class="button">View</a>
-                </div>
+{% block title %}MiWayCyber{% endblock %}
+{% block content %}
+<section class="cont">
+    <div class="header">
+        <h1>Clients</h1>
+        <p class="clientsNo">{{users|length}}</p>
+    </div>
+    <div class="clients">
+        {% for user in users %}
+        <div class="client">
+            <img class="profilePicture"
+                src="https://profilemagazine.com/wp-content/uploads/2020/04/Ajmere-Dale-Square-thumbnail.jpg" alt="">
+            <p class="name">{{user.first_name}} {{user.last_name}}</p>
+            <div class="boxes">
+                <p class="box">
+                    C{{ user.id}}
+                </p>
+                <p class="box" style="background: #D9D9D9;">
+                    Active client
+                </p>
             </div>
-            {% endfor %}
-        </div>
-        <div class="buttons">
-            <a href="/admin/addUser" class="button">+ add New User</a>
-        </div>
-    </section>
-    <section class="cont">
-        <div class="header">
-            <h1>Policies</h1>
-            <p class="clientsNo">{{policies|length}}</p>
-        </div>
-        <div class="policies2">
-            {% for policy in policies %}
-            <div class="policy2">
-                <div>
-                    <img class="policyImg" src={{policy.pictureURL}} alt="">
+            <p class="pNomarl" style="text-decoration-line: underline;">{{user.email}}</p>
+            <p class="pNomarl">{{user.phone}}</p>
+            <p class="address">{{user.address}}</p>
+            <p class="name">Client's Policies</p>
+            <div class="policies">
+                {% for policy in policies %}
+                <div class="policyDiv">
+                    <p class="policy">{{policy.name}}</p>
                 </div>
-                <div style="padding: 10px;">
-                    <p class="name">{{policy.name}}</p>
-                    <p class="address">{{policy.description}}</p>
-
-                    <p class="fromPrice">from</p>
-                    <p class="price">R{{policy.basePremium}}</p>
-                    <p class="fromPrice">Coverage starts at R{{policy.baseCoverage}}</p>
-                </div>
-                <div class="buttons">
-                    <a href="" class="button">View</a>
-                </div>
+                {% endfor %}
             </div>
-            {% endfor %}
+            <div class="buttons">
+                <a href="/admin/{{ user.id }}" class="button">View</a>
+            </div>
         </div>
-        <div class="buttons">
-            <a href="/admin/addUser" class="button">+ add New Policy</a>
-        </div>
-    </section>
-    <section class="cont">
-        <div class="header">
-            <h1>Applications</h1>
-            <p class="clientsNo">0</p>
-        </div>
-    </section>
-</body>
+        {% endfor %}
+    </div>
+    <div class="buttons">
+        <a href="/admin/addUser" class="button">+ add New User</a>
+    </div>
+</section>
+<section class="cont">
+    <div class="header">
+        <h1>Policies</h1>
+        <p class="clientsNo">{{policies|length}}</p>
+    </div>
+    <div class="policies2">
+        {% for policy in policies %}
+        <div class="policy2">
+            <div>
+                <img class="policyImg" src={{policy.pictureURL}} alt="">
+            </div>
+            <div style="padding: 10px;">
+                <p class="name">{{policy.name}}</p>
+                <p class="address">{{policy.description}}</p>
 
-</html>
+                <p class="fromPrice">from</p>
+                <p class="price">R{{policy.basePremium}}</p>
+                <p class="fromPrice">Coverage starts at R{{policy.baseCoverage}}</p>
+            </div>
+            <div class="buttons">
+                <a href="" class="button">View</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="buttons">
+        <a href="/admin/addUser" class="button">+ add New Policy</a>
+    </div>
+</section>
+<section class="cont">
+    <div class="header">
+        <h1>Applications</h1>
+        <p class="clientsNo">0</p>
+    </div>
+</section>
+{% endblock %}
