@@ -19,6 +19,7 @@ class UserPolicy(db.Model):
     assetDecription = db.Column(db.String(255))
     assetSecurity = db.Column(db.String(255))
     clientDeclaration = db.Column(db.String(255))
+    premium = db.Column(db.Float)
 
     def to_dict(self):
         return {

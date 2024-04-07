@@ -118,6 +118,11 @@ h1 {
   padding: 5px 4px;
   margin: 3px 3px;
 }
+main {
+  min-height: 100vh; /* Adjust the height */
+  padding-bottom: 250px; /* Adjust based on footer height */
+}
+
 
 .buttons {
   display: flex;
@@ -326,6 +331,11 @@ h1 {
 .products {
   padding: 0px 50px;
   margin-top: 30px;
+}
+.boxR{
+  background-color: #e0004d;
+  padding: .5px 25px;
+  border-radius: 8px;
 }
 
 /* When Stuff get Smaller yeah */

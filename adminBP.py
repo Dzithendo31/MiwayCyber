@@ -35,6 +35,11 @@ def user_detail_page(id):
         return render_template("userdetailsAdmin.html", user=data,policies =pols)
     else:
         return "<h1>Movie not found</h1>" 
+    
+def calculate_premium(user,policy):
+    cover = policy.coverage
+    
+
 def policyNames(user_policies):
     newList =[]
     for Userpolicy in user_policies:
