@@ -2,10 +2,12 @@ from flask import Flask, jsonify, request, render_template, Blueprint,redirect, 
 from flask_login import login_required, login_user, logout_user
 from flask_sqlalchemy import SQLAlchemy
 import flask
+from policyBP import Policy
+from userPolicyBP import UserPolicy
 from extensions import db
 from models.user import User
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
+from wtforms import StringField, PasswordField,FloatField, SubmitField
 from wtforms.validators import InputRequired, Length, Email,ValidationError
 users_bp = Blueprint('users_bp',__name__)
 
@@ -85,7 +87,19 @@ def create_movies():
     except Exception as e:
         db.session.rollback()  # Undo the change
         return jsonify({"message": str(e)}), 500
-    
+
+# User view of the policy
+@users_bp.route("/userpolicy/<id>")  # HOF
+def policy_detail_page(id):
+    filtered_policy = Policy.query.get(id)
+    #Then you can query the Policies Database base on the ID to find the client's polices
+    if filtered_policy:
+        data = filtered_policy.to_dict()
+        return render_template("policydetailsAdmin.html", policy=data,user="customer")
+    else:
+        return "<h1>Movie not found</h1>"
+
+
 class RegistrationForm(FlaskForm):
 
     firstname = StringField('firstname', validators=[InputRequired(), Length(min=3)])
@@ -128,6 +142,8 @@ def register_page():
             message ={
                 "message":"User Added Successfully.",
                 "success":True,
+                "action":"View User",
+                "URL": f"policy/{new_user.id}",
                 "data":new_user
             }
             return render_template("success.html",message=message)
@@ -181,3 +197,63 @@ def login_page():
         else:
             flask.flash('Invalid username or password.', 'error')
     return render_template("login.html", form=form)
+
+
+# Applying a s a logged in user.
+
+#apply for a new Policy
+class UserPolicyForm(FlaskForm):
+    userID = StringField('User ID', validators=[InputRequired()])
+    policyID = StringField('Policy ID', validators=[InputRequired()])
+    coverage = FloatField('Coverage', validators=[InputRequired()])
+    status = StringField('Status', validators=[InputRequired()])
+    startDate = StringField('Start Date', validators=[InputRequired()])
+    endDate = StringField('End Date', validators=[InputRequired()])
+    assetValue = FloatField('Asset Value', validators=[InputRequired()])
+    assetDescription = StringField('Asset Description')
+    assetSecurity = StringField('Asset Security')
+    clientDeclaration = StringField('Client Declaration')
+    submit = SubmitField('Submit')
+
+
+
+@users_bp.route('/apply', methods=['GET', 'POST'])
+def user_policy():
+    form = UserPolicyForm()
+    print("Kinda-Working")
+    if form.validate_on_submit():
+        # Create a new UserPolicy object and populate it with form data
+        user_policy = UserPolicy(
+            userID=form.userID.data,
+            policyID=form.policyID.data,
+            coverage=form.coverage.data,
+            status=form.status.data,
+            startDate=form.startDate.data,
+            endDate=form.endDate.data,
+            assetValue=form.assetValue.data,
+            assetDecription=form.assetDescription.data,
+            assetSecurity=form.assetSecurity.data,
+            clientDeclaration=form.clientDeclaration.data
+        )
+        try:
+            # Add the new UserPolicy object to the database session
+            print("Working")
+            db.session.add(user_policy)
+            db.session.commit()
+            message ={
+                "message":"User Added Successfully.",
+                "success":True,
+                "action":"View User",
+                "URL": f"user/{user_policy.userID}",
+                "data":user_policy
+            }
+            return render_template("success.html",message=message)  # Redirect to a success page after form submission
+        except Exception as e:
+            db.session.rollback()
+            message ={
+            "message":"Error Adding User to DB.",
+            "success":False,
+            "data":str(e)
+                }
+            return render_template("success.html",message=message)
+    return render_template('applyPolicy.html', form=form)

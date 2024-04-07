@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
 {% block title %}MiWayCyber{% endblock %}
+{% block style %}
+{% endblock %}
 {% block content %}
 <div class="landing">
     <div class="words">
@@ -49,11 +51,40 @@
         <p class="serviceTitle"><span><i class="fa-solid fa-arrow-left fa-0.5x"></i></span> Our Services</p>
         <div class="para">
             <p class="paraServices">We offer these comprehensive services, with the aim to support individuals and organizations in effectively managing the financial risks associated with digital assets, digital identity, and data privacy in today's interconnected and data-driven business environment.</p>
-        </div>
-        <div class="imgs">
             <img style="width: 250px;" src="https://th.bing.com/th/id/R.890eef73dc8197e12bcefa4b46bb69f9?rik=75%2bPnFWOL6Z7oA&pid=ImgRaw&r=0" alt="">
         </div>
     </div>
+</div>
+<div class="products">
+    <div class="policyWords">
+        <div>
+            <p class="serviceTitle" style="text-align: center;" ><span><i class="fa-solid fa-arrow-left fa-0.5x"></i></span> Our Services</p>
+        </div>
+        <div class="para">
+            <p class="paraServices" style="text-align: center;">We offer these comprehensive services, with the aim to support individuals and organizations in effectively managing the financial risks associated with digital assets, digital identity, and data privacy in today's interconnected and data-driven business environment.</p>
+        </div>
+    </div>
+    <div class="policies3">
+        {% for policy in policies %}
+        <div class="policy2" style="margin-bottom: 30px;">
+            <div>
+                <img class="policyImg" src={{policy.pictureURL}} alt="">
+            </div>
+            <div style="padding: 10px;">
+                <p class="name">{{policy.name}}</p>
+                <p class="address">{{policy.description}}</p>
+
+                <p class="fromPrice">from</p>
+                <p class="price">R{{policy.basePremium}}</p>
+                <p class="fromPrice">Coverage starts at R{{policy.baseCoverage}}</p>
+            </div>
+            <div class="buttons">
+                <a href="/userpolicy/{{ policy.id }}" class="button">View More</a>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
 </div>
 
 {% endblock %}

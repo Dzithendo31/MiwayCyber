@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 
 {% block title %}MiWayCyber{% endblock %}
+{% block style %}
+{% endblock %}
 {% block content %}
 <section class="cont">
     <div class="header">
@@ -33,7 +35,7 @@
                 {% endfor %}
             </div>
             <div class="buttons">
-                <a href="/admin/{{ user.id }}" class="button">View</a>
+                <a href="/admin/user/{{ user.id }}" class="button">View</a>
             </div>
         </div>
         {% endfor %}
@@ -62,7 +64,7 @@
                 <p class="fromPrice">Coverage starts at R{{policy.baseCoverage}}</p>
             </div>
             <div class="buttons">
-                <a href="" class="button">View</a>
+                <a href="/admin/policy/{{ policy.id }}" class="button">View</a>
             </div>
         </div>
         {% endfor %}

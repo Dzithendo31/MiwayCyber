@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}MiWayCyber{% endblock %}
+{% block content %}
+<h1>User Policy Form</h1>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        {% for field in form %}
+            <div>
+                {{ field.label }}<br>
+                {{ field(size=32) }}<br>
+                {% for error in field.errors %}
+                    <span style="color: red;">{{ error }}</span><br>
+                {% endfor %}
+            </div>
+        {% endfor %}
+        <div>
+            {{ form.submit() }}
+        </div>
+    </form>
+{% endblock %}
+

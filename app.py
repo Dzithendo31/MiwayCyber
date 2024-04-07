@@ -4,7 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import text
 from dotenv import load_dotenv
 from models.user import User
-
+from policyBP import Policy
 from usersBP import users_bp
 from userslistBP import users_list_bp
 from policyBP import policy_bp
@@ -46,13 +46,7 @@ app.register_blueprint(policy_bp, url_prefix = "/policies")
 app.register_blueprint(adminBP, url_prefix = "/admin") 
 @app.route("/")
 def home():
-    return render_template("index.html")
+    allPolicy = Policy.query.all()  # Select * from movies | movie_list iterator
+    data2 = [policy.to_dict() for policy in allPolicy]  # list of dictionaries
+    return render_template("index.html", policies = data2)
 
-
-@app.get('/users/<id>')
-def get_user(id):
-    FoundUser = next((user for user in UserData if user['id']==int(id)),None)
-    if FoundUser == None:
-        error = {'message':'User Not found'}
-        return jsonify(error),404
-    return jsonify(FoundUser),200

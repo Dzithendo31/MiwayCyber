@@ -1,0 +1,117 @@
+{% extends "base.html" %}
+
+{% block title %}Policy{% endblock %}
+{% block style %}
+<style>
+    .contin {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        font-family: Roboto;
+    }
+
+    .clientA {
+        text-align: center;
+    }
+
+    .boxesX {
+        display: flex;
+        justify-content: center;
+    }
+
+    .boxX {
+        color: #26a69a;
+        border: #26a69a solid 3px;
+        padding: 10px;
+        margin: 5px;
+        border-radius: 5px;
+        display: inline-block;
+    }
+
+    .buttonX {
+        background-color: #e0004d;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 10px;
+        color: #ffffff;
+        margin: 10px 8px;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+        /* Add smooth transition */
+    }
+
+    .buttonX:hover {
+        background-color: #ff88a6;
+        /* Change background color on hover */
+    }
+    .declare{
+        padding: 0px 100px;
+    }
+</style>
+{% endblock %}
+{% block content %}
+<section class="contin">
+    <div>
+        <div class="clientA">
+            <div class="imgs">
+                <img src={{policy.pictureURL}}
+                    alt="https://smallbizclub.com/wp-content/uploads/2021/07/bigstock-Serious-Business-Man-Trader-An-394931603.jpg">
+            </div>
+            <h1 class="nameX">{{policy.name}}</h1>
+            <p style="color: #e0004d; font-weight:700">Insurance</p>
+            <p></p>
+            {% if user == "admin" %}
+            <div class="boxesX">
+                <p class="boxX">
+                    C{{ policy.id}}
+                </p>
+            </div>
+            {% endif %}
+            <div class="declare">
+                <p class="pNomarl">{{policy.description}}</p>
+                <p class="address">Premiums for Digital Assets Insurance will be calculated based on factors such as the
+                    value of insured assets, risk profile, and security measures implemented by the policyholder.
+                    Deductibles may apply, requiring the policyholder to bear a portion of the losses before the
+                    insurance
+                    coverage takes effect.</p>
+                <p class="address">Policyholders are expected to implement robust security measures to safeguard their
+                    digital assets, including the use of secure wallets, multi-factor authentication, encryption, and
+                    regular security audits. Failure to adhere to recommended security practices may affect the
+                    eligibility
+                    for coverage or result in higher premiums</p>
+                <p class="address">Digital Assets Insurance policies are subject to renewal on an annual basis, with
+                    premiums adjusted based on changes in asset values or risk factors</p>
+                <p class="address">Policyholders can request amendments to coverage limits or terms based on evolving
+                    needs
+                    or changes in the digital asset landscape</p>
+                <p class="address">This policy overview is for informational purposes only and does not constitute a
+                    legally
+                    binding insurance contract. Actual policy terms and conditions may vary based on the specific
+                    insurance
+                    provider and jurisdiction. Policyholders are advised to carefully review the complete policy
+                    documentation provided by their insurance provider for comprehensive coverage details and
+                    limitations.
+                </p>
+            </div>
+
+            {% if user == "customer" %}
+            <div class="buttonsX" style=" margin: 20px;">
+                <a href="" class="buttonX">Apply</a>
+            </div>
+            {% endif %}
+            {% if user == "admin" %}
+            <div>
+                <div class="buttonsX" style=" margin: 20px;">
+                    <a href="" class="buttonX">Update</a>
+                </div>
+                <div class="buttonsX" style=" margin: 20px;">
+                    <a href="" class="buttonX">Delete</a>
+                </div>
+            </div>
+
+            {% endif %}
+        </div>
+    </div>
+</section>
+{% endblock %}

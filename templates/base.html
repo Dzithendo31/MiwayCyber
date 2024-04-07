@@ -12,9 +12,11 @@
     <meta charset="UTF-8">
     <title>{% block title %}My Website{% endblock %}</title>
     <meta name="viewport" content="width=S, initial-scale=1.0">
+    {% block styleTag%} 
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    {% endblock %}
     <script src="https://kit.fontawesome.com/0fa3348648.js" crossorigin="anonymous"></script>
-
+    {% block style %}My Website{% endblock %}
   </head>
 
 <body>
@@ -59,8 +61,19 @@
     </main>
 
     <footer>
-        <!-- Footer content -->
+      <section class="footer">
+        <img src="{{ url_for('static', filename='miway.png') }}" alt="">
+        <div>
+          <i class="fa-brands fa-instagram"></i>
+          <i class="fa-brands fa-facebook"></i>
+          <i class="fa-brands fa-twitter"></i>
+        </div>
+        <div>
+          <p>Copyright © MiWay is a licensed non-life insurer and Financial Services Provider (FSP 33970). Ts & Cs apply.</p>
+        </div>
+      </section>
     </footer>
+    
 </body>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
