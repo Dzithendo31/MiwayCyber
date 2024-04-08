@@ -7,7 +7,6 @@
     .contin {
         display: flex;
         justify-content: center;
-        height: 100vh;
         margin-top: 20px;
         margin-bottom: 20px;
         font-family: Roboto;
@@ -59,14 +58,14 @@
     }
 
     .policy {
-        width: 200px;
+        width: 400px;
         flex-shrink: 0;
         border-radius: 10px;
         border: 2px solid #DADADA;
         background: #FFF;
         box-shadow: 0px 0px 10.3px 0px rgba(0, 0, 0, 0.25);
         margin: 0;
-        padding: 20px 5px;
+        padding: 30px 15px;
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -110,7 +109,7 @@
             <p class="pNomarl">{{user.phone}}</p>
             <p class="address">{{user.address}}</p>
             <div class="buttonsX" style=" margin: 20px;">
-                <a href="" class="buttonX">Apply for New Policy</a>
+                <a href="/apply" class="buttonX">Apply for New Policy</a>
             </div>
         </div>
         <div>
@@ -121,12 +120,28 @@
             {% for policy in policies %}
             <div class="policy">
                 <h6 class="hgservices" style="color: black;">{{policy.name}}</h6>
-                <p class="boxR">{{policy.status}}</p>
+                <p class="boxR" style="background-color: {{policy.status.color}};">{{policy.status.name}}</p>
+                <h6 style="color: rgb(196, 0, 0);">at R{{policy.coverage*0.02+22}}pm.</h6>
                 <p class="address">{{policy.description}}</p>
                 <h3 style="color: #2c2c2c;"> 
                     R{{policy.coverage}} 
                 </h3>
+
+                <h6 style="color: #2c2c2c;">Asset Description</h6>
+                <p class="address">{{policy.assetDescription}}</p>
+                <h6 style="color: #2c2c2c;">Asset Security Measures</h6>
+                <p class="address">{{policy.assetSecurity}}</p>
+                <div class="buttons">
+                    <a href="/admin/approve_policy/{{policy.userPolicy_ID}}" class="button">Approve</a>
+                </div>
             </div>
+            {% endfor %}
+        </div>
+        <div class="statusInfo">
+            <h3>Understanding Your Policy Status</h3>
+            {% for status in states %}
+            <p class="boxR " style="background-color: {{status.color}};">{{status.name}}</p>
+            <p class="address" style="padding: 0px 80px;">{{status.description}}</p>
             {% endfor %}
         </div>
     </div>

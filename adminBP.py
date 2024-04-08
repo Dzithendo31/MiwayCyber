@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, request, render_template, Blueprint
 from flask_sqlalchemy import SQLAlchemy
 from models.user import User
+from models.status import status
 from extensions import db
 from userPolicyBP import UserPolicy
 from policyBP import Policy
@@ -26,21 +27,55 @@ def user_detail_page(id):
     filtered_user = User.query.get(id)
     #Then you can query the Policies Database base on the ID to find the client's polices
     user_policies = UserPolicy.query.filter_by(userID=id).all()
-
-    pols = policyNames(user_policies)
+    #get all status data
+    states = status.query.all()
+    pols = policyNames(user_policies,states)
+    print(pols)
     #Add the polic Names
-
     if filtered_user:
         data = filtered_user.to_dict()
-        return render_template("userdetailsAdmin.html", user=data,policies =pols)
+        return render_template("userdetailsAdmin.html", user=data,policies =pols,states=states)
     else:
-        return "<h1>Movie not found</h1>" 
-    
-def calculate_premium(user,policy):
-    cover = policy.coverage
+        message ={
+          "message":"Error Adding User to DB.",
+          "success":False,
+          "data":""
+          }
+        return render_template("success.html", message=message) 
     
 
-def policyNames(user_policies):
+@adminBP.route("/approve_policy/<policy_id>", methods=['POST'])
+def approve_policy(policy_id):
+    if request.method == 'POST':
+        policy = UserPolicy.query.get(policy_id)
+        if policy:
+            policy.status = "3"
+            db.session.commit()
+        message ={
+                    "message":"User Added Successfully.",
+                    "success":True,
+                    "action":"View User",
+                    "URL": f"policy/{policy.userID}",
+                    "data":policy
+                }
+        return render_template("success.html",message=message)
+#Monthly Premium = (Coverage Value * Risk Assessment Factor) + Administrative Costs + Profit Margin
+def calculate_premium(riskFactor,policy):
+    cover = policy.coverage
+    premium = (cover*riskFactor) + 22 + (cover*riskFactor)*0.20
+    return premium
+
+
+def set_status(states,policy):
+    policyStatus = policy['status']
+    for status in states:
+        status = status.to_dict()
+        if status.get('id') == policyStatus:
+            policy['status'] = status
+    return policy
+
+
+def policyNames(user_policies,states):
     newList =[]
     for Userpolicy in user_policies:
         Userpolicy_dict = Userpolicy.to_dict()
@@ -48,6 +83,7 @@ def policyNames(user_policies):
         policy = Policy.query.filter_by(id=Userpolicy.policyID).first()
         Userpolicy_dict['name'] = policy.name
         Userpolicy_dict['description'] = policy.description
+        Userpolicy_dict = set_status(states,Userpolicy_dict)
         newList.append(Userpolicy_dict)
 
     return newList
@@ -161,3 +197,6 @@ def register_policy_page():
         }
             return render_template("success.html",message=message)
     return render_template("register.html", form =form)
+
+
+#Approve a policy

@@ -206,7 +206,6 @@ class UserPolicyForm(FlaskForm):
     userID = StringField('User ID', validators=[InputRequired()])
     policyID = StringField('Policy ID', validators=[InputRequired()])
     coverage = FloatField('Coverage', validators=[InputRequired()])
-    status = StringField('Status', validators=[InputRequired()])
     startDate = StringField('Start Date', validators=[InputRequired()])
     endDate = StringField('End Date', validators=[InputRequired()])
     assetValue = FloatField('Asset Value', validators=[InputRequired()])
@@ -227,13 +226,14 @@ def user_policy():
             userID=form.userID.data,
             policyID=form.policyID.data,
             coverage=form.coverage.data,
-            status=form.status.data,
+            status=2,
             startDate=form.startDate.data,
             endDate=form.endDate.data,
             assetValue=form.assetValue.data,
             assetDecription=form.assetDescription.data,
             assetSecurity=form.assetSecurity.data,
-            clientDeclaration=form.clientDeclaration.data
+            clientDeclaration=form.clientDeclaration.data,
+            premium = form.coverage.data*0.02+22
         )
         try:
             # Add the new UserPolicy object to the database session

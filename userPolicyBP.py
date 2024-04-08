@@ -33,6 +33,7 @@ class UserPolicy(db.Model):
             "AssetValue": self.assetValue,
             "assetDescription": self.assetDecription,
             "assetSecurity": self.assetSecurity,
-            "clientDeclaration": self.clientDeclaration
+            "clientDeclaration": self.clientDeclaration,
+            "premium": self.premium
         }
     
