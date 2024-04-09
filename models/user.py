@@ -13,7 +13,7 @@ class User(UserMixin,db.Model):
     address = db.Column(db.String(100))
     password = db.Column(db.String(100))
     gender = db.Column(db.String(10))  # Assuming gender will be stored as a string, adjust data type as needed
-
+    role = db.Column(db.String(50))
     # JSON - Keys
     def to_dict(self):
         return {
@@ -25,5 +25,6 @@ class User(UserMixin,db.Model):
             "email": self.email,
             "address": self.address,
             "password": self.password,
-            "gender": self.gender
+            "gender": self.gender,
+            "role":self.role
         }

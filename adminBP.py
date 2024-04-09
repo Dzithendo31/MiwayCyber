@@ -8,11 +8,13 @@ from policyBP import Policy
 from flask_wtf import FlaskForm
 from wtforms import StringField,  SubmitField
 from wtforms.validators import InputRequired, ValidationError
+from flask_login import login_required, current_user
 
 adminBP = Blueprint('adminBP',__name__)
 
 #This URL is resticted only to the admin Site only.
 @adminBP.route("/")  # HOF
+@login_required
 def user_list_page():
     user_list = User.query.all()  # Select * from movies | movie_list iterator
     data = [user.to_dict() for user in user_list]  # list of dictionaries
@@ -20,7 +22,14 @@ def user_list_page():
     #Get your policies
     allPolicy = Policy.query.all()  # Select * from movies | movie_list iterator
     data2 = [policy.to_dict() for policy in allPolicy]  # list of dictionaries
-    return render_template("admin.html", users=data,policies=data2)
+    if current_user.role == 'admin':
+        return render_template("admin.html", users=data,policies=data2)
+    else:
+        message ={
+                    "message":"No Access To This Page.",
+                    "success":False
+                }
+        return render_template("success.html",message=message)
  
 @adminBP.route("/user/<id>")  # HOF
 def user_detail_page(id):
@@ -183,7 +192,7 @@ def register_policy_page():
             message ={
                 "message":"New Policy Created Successfully.",
                 "success":True,
-                "action":"View Profile",
+                "action":"View Policy",
                 "URL": f"policy/{new_policy.id}",
                 "data":new_policy
             }

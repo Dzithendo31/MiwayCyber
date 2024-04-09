@@ -5,20 +5,42 @@
 {% endblock %}
 {% block content %}
 <h1>User Policy Form</h1>
-    <form method="POST">
-        {{ form.hidden_tag() }}
-        {% for field in form %}
-            <div>
-                {{ field.label }}<br>
-                {{ field(size=32) }}<br>
-                {% for error in field.errors %}
-                    <span style="color: red;">{{ error }}</span><br>
-                {% endfor %}
-            </div>
-        {% endfor %}
-        <div>
-            {{ form.submit() }}
-        </div>
-    </form>
+<form method="POST" action="">
+    {{ form.csrf_token }}
+    <div class="form-group">
+        {{ form.policyID.label }}
+        {{ form.policyID(class="form-control") }}
+    </div>
+    <div class="form-group">
+        {{ form.coverage.label }}
+        {{ form.coverage(class="form-control") }}
+    </div>
+    <div class="form-group">
+        {{ form.startDate.label }}
+        {{ form.startDate(class="form-control", type="date") }}
+    </div>
+    <div class="form-group">
+        {{ form.endDate.label }}
+        {{ form.endDate(class="form-control", type="date") }}
+    </div>
+    <div class="form-group">
+        {{ form.assetValue.label }}
+        {{ form.assetValue(class="form-control") }}
+    </div>
+    <div class="form-group">
+        {{ form.assetDescription.label }}
+        {{ form.assetDescription(class="form-control") }}
+    </div>
+    <div class="form-group">
+        {{ form.assetSecurity.label }}
+        {{ form.assetSecurity(class="form-control") }}
+    </div>
+    <div class="form-group">
+        {{ form.clientDeclaration(class="form-check-input") }}
+        {{ form.clientDeclaration.label(class="form-check-label") }}
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
 {% endblock %}
 

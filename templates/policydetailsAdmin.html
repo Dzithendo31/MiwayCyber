@@ -95,12 +95,15 @@
                 </p>
             </div>
 
-            {% if user == "customer" %}
+            {% if current_user == "client" %}
             <div class="buttonsX" style=" margin: 20px;">
-                <a href="" class="buttonX">Apply</a>
+                {% if current_user.is_authenticated %}
+                <a href="/apply" class="buttonX">Apply</a>
+                {% else %}
+                <a href="/login" class="buttonX">Apply</a>
+                {% endif %}
             </div>
-            {% endif %}
-            {% if user == "admin" %}
+            {% elif current_user == "admin" %}
             <div>
                 <div class="buttonsX" style=" margin: 20px;">
                     <a href="" class="buttonX">Update</a>
@@ -109,7 +112,8 @@
                     <a href="" class="buttonX">Delete</a>
                 </div>
             </div>
-
+            {% else %}
+            <a href="/login" class="buttonX">Apply</a>
             {% endif %}
         </div>
     </div>

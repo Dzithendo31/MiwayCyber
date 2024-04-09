@@ -359,6 +359,8 @@ main {
   text-align: center;
 }
 
+
+
 /* When Stuff get Smaller yeah */
 @media (max-width: 900px) {
   .image {

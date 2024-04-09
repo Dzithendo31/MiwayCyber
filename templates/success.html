@@ -17,7 +17,7 @@
             </button>
             {% if message.success%}
             <button type="submit" class="btn btn-secondary" style="background: #26a69a;border:none;">
-                <a href="/admin/{{ message.data.id }}" style="text-decoration: none; color: inherit;">View User
+                <a href="/admin/{{ message.URL }}" style="text-decoration: none; color: inherit;">{{ message.action }}
                 </a>
             </button>
             {% endif %}

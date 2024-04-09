@@ -26,7 +26,7 @@
     
     <nav class="navbar navbar-expand-lg custom-navbar-color">
       <div class="container-fluid">
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" href="/">
           <img src="{{ url_for('static', filename='miway.png') }}" alt="Logo"  height="30" class="d-inline-block align-top">
           Cyber
         </a>
@@ -36,20 +36,25 @@
         <div class="collapse navbar-collapse" id="navbarText">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link" href="#">Services</a>
+              <a class="nav-link" href="/">Services</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Insurance</a>
+              <a class="nav-link" href="/">Insurance</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Apply</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="#">Claim</a>
+              <a class="nav-link" href="/register">Apply</a>
             </li>
           </ul>
-          
-          <button class="btn btn-primary">Log In</button>
+          {% if current_user.is_authenticated %}
+            {% if current_user.role == 'admin'%}
+            <a href="/admin" class="btn btn-primary">Admin</a>
+            {% else %}
+            <a href="/user/{{current_user.id}}" class="btn btn-light">Profile</a>
+            {% endif %}
+            <a href="{{url_for('logout')}}" class="btn btn-light">log Out</a>
+          {% else %}
+          <a href="/login" class="btn btn-primary">Log In</a>
+          {% endif %}
         </div>
       </div>
     </nav>

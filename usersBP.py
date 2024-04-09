@@ -1,13 +1,15 @@
 from flask import Flask, jsonify, request, render_template, Blueprint,redirect, url_for
-from flask_login import login_required, login_user, logout_user
+from flask_login import login_required, login_user,current_user
 from flask_sqlalchemy import SQLAlchemy
 import flask
+from models.status import status
 from policyBP import Policy
+from adminBP import policyNames
 from userPolicyBP import UserPolicy
 from extensions import db
 from models.user import User
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField,FloatField, SubmitField
+from wtforms import BooleanField, StringField, PasswordField,FloatField, SubmitField,SelectField
 from wtforms.validators import InputRequired, Length, Email,ValidationError
 users_bp = Blueprint('users_bp',__name__)
 
@@ -98,7 +100,28 @@ def policy_detail_page(id):
         return render_template("policydetailsAdmin.html", policy=data,user="customer")
     else:
         return "<h1>Movie not found</h1>"
+    
 
+@users_bp.route("/user/<id>")  # HOF
+def user_detail_page(id):
+    filtered_user = User.query.get(id)
+    #Then you can query the Policies Database base on the ID to find the client's polices
+    user_policies = UserPolicy.query.filter_by(userID=id).all()
+    #get all status data
+    states = status.query.all()
+    pols = policyNames(user_policies,states)
+    print(pols)
+    #Add the polic Names
+    if filtered_user:
+        data = filtered_user.to_dict()
+        return render_template("userdetailsAdmin.html", user=data,policies =pols,states=states)
+    else:
+        message ={
+          "message":"Error Adding User to DB.",
+          "success":False,
+          "data":""
+          }
+        return render_template("success.html", message=message) 
 
 class RegistrationForm(FlaskForm):
 
@@ -120,6 +143,7 @@ class RegistrationForm(FlaskForm):
             raise ValidationError("Username is taken")
         
 @users_bp.route("/register", methods =["GET","POST"])  # HOF
+
 def register_page():
     #Create a new ......?
     form = RegistrationForm()
@@ -192,7 +216,7 @@ def login_page():
             login_user(user)#Token is Stored in the browser.
             flask.flash('Logged in successfully.')
             # Redirect to the next page if available, otherwise to the home page
-            next_page = flask.request.args.get('next') or url_for('adminBP.user_list_page')
+            next_page = flask.request.args.get('next') or url_for('home')
             return redirect(next_page)
         else:
             flask.flash('Invalid username or password.', 'error')
@@ -203,27 +227,29 @@ def login_page():
 
 #apply for a new Policy
 class UserPolicyForm(FlaskForm):
-    userID = StringField('User ID', validators=[InputRequired()])
-    policyID = StringField('Policy ID', validators=[InputRequired()])
+    policyID = SelectField('Policy ID', validators=[InputRequired()])
     coverage = FloatField('Coverage', validators=[InputRequired()])
     startDate = StringField('Start Date', validators=[InputRequired()])
     endDate = StringField('End Date', validators=[InputRequired()])
     assetValue = FloatField('Asset Value', validators=[InputRequired()])
     assetDescription = StringField('Asset Description')
     assetSecurity = StringField('Asset Security')
-    clientDeclaration = StringField('Client Declaration')
+    clientDeclaration = BooleanField('I hereby declare that the information provided in this application for the Digital Asset Protection Policy is true, accurate, and complete. I acknowledge and accept the terms and conditions of the policy, including coverage limits, exclusions, and obligations. I confirm that I am the lawful owner or authorized custodian of the digital assets described in this application and have implemented reasonable security measures to protect them. I consent to the use of my personal data for underwriting and policy administration purposes', validators=[InputRequired()])
     submit = SubmitField('Submit')
 
 
 
 @users_bp.route('/apply', methods=['GET', 'POST'])
+@login_required
 def user_policy():
     form = UserPolicyForm()
+    policy_options = [(policy.id, policy.name) for policy in Policy.query.all()]
+    form.policyID.choices = policy_options
     print("Kinda-Working")
     if form.validate_on_submit():
         # Create a new UserPolicy object and populate it with form data
         user_policy = UserPolicy(
-            userID=form.userID.data,
+            userID=current_user.id,
             policyID=form.policyID.data,
             coverage=form.coverage.data,
             status=2,
@@ -241,7 +267,7 @@ def user_policy():
             db.session.add(user_policy)
             db.session.commit()
             message ={
-                "message":"User Added Successfully.",
+                "message":"Policy Applied Successfully.",
                 "success":True,
                 "action":"View User",
                 "URL": f"user/{user_policy.userID}",

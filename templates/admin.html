@@ -7,10 +7,10 @@
 <section class="cont">
     <div class="header">
         <h1>Clients</h1>
-        <p class="clientsNo">{{users|length}}</p>
+        <p class="clientsNo">{{users|length - 1}}</p>
     </div>
     <div class="clients">
-        {% for user in users %}
+        {% for user in users if user.role == 'client'%}
         <div class="client">
             <img class="profilePicture"
                 src="https://profilemagazine.com/wp-content/uploads/2020/04/Ajmere-Dale-Square-thumbnail.jpg" alt="">
@@ -26,14 +26,6 @@
             <p class="pNomarl" style="text-decoration-line: underline;">{{user.email}}</p>
             <p class="pNomarl">{{user.phone}}</p>
             <p class="address">{{user.address}}</p>
-            <p class="name">Client's Policies</p>
-            <div class="policies">
-                {% for policy in policies %}
-                <div class="policyDiv">
-                    <p class="policy">{{policy.name}}</p>
-                </div>
-                {% endfor %}
-            </div>
             <div class="buttons">
                 <a href="/admin/user/{{ user.id }}" class="button">View</a>
             </div>
@@ -41,7 +33,7 @@
         {% endfor %}
     </div>
     <div class="buttons">
-        <a href="/admin/addUser" class="button">+ add New User</a>
+        <a href="/register" class="button">+ add New User</a>
     </div>
 </section>
 <section class="cont">
@@ -70,12 +62,12 @@
         {% endfor %}
     </div>
     <div class="buttons">
-        <a href="/admin/addUser" class="button">+ add New Policy</a>
+        <a href="/admin/register" class="button">+ add New Policy</a>
     </div>
 </section>
 <section class="cont">
     <div class="header">
-        <h1>Applications</h1>
+        <h1>Reports</h1>
         <p class="clientsNo">0</p>
     </div>
 </section>

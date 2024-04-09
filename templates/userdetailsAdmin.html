@@ -108,9 +108,11 @@
             <p class="pNomarl" style="text-decoration-line: underline;">{{user.email}}</p>
             <p class="pNomarl">{{user.phone}}</p>
             <p class="address">{{user.address}}</p>
+            {%if current_user.role == 'client'%}
             <div class="buttonsX" style=" margin: 20px;">
                 <a href="/apply" class="buttonX">Apply for New Policy</a>
             </div>
+            {% endif %}
         </div>
         <div>
             <h2 style="text-align: center;">Client's Policies</h2>
@@ -131,9 +133,11 @@
                 <p class="address">{{policy.assetDescription}}</p>
                 <h6 style="color: #2c2c2c;">Asset Security Measures</h6>
                 <p class="address">{{policy.assetSecurity}}</p>
+                {%if current_user.role == 'admin'%}
                 <div class="buttons">
                     <a href="/admin/approve_policy/{{policy.userPolicy_ID}}" class="button">Approve</a>
                 </div>
+                {% endif %}
             </div>
             {% endfor %}
         </div>
