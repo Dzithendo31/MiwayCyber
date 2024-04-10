@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}MiWayCyber{% endblock %}
+{% block style %}
+{% endblock %}
+{% block content %}
+<h1>Create New Claim</h1>
+<form method="POST" action="">
+    {{ form.hidden_tag() }}
+    <div>
+        {{ form.userPolicy.label }} {{ form.userPolicy }}
+        {% if form.userPolicy.errors %}
+            {% for error in form.userPolicy.errors %}
+                <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div>
+        <label for="claimDate">{{ form.claimDate.label }}</label>
+        <input type="date" id="claimDate" name="claimDate">
+        {% if form.claimDate.errors %}
+            {% for error in form.claimDate.errors %}
+                <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div>
+        {{ form.claimAmount.label }} {{ form.claimAmount }}
+        {% if form.claimAmount.errors %}
+            {% for error in form.claimAmount.errors %}
+                <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        {% endif %}
+    </div>
+    <div>
+        {{ form.claimDescription.label }} {{ form.claimDescription }}
+        {% if form.claimDescription.errors %}
+            {% for error in form.claimDescription.errors %}
+                <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        {% endif %}
+    </div>
+    {{ form.submit(class="btn btn-primary") }}
+</form>
+
+{% endblock %}

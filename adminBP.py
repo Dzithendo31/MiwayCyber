@@ -79,7 +79,7 @@ def set_status(states,policy):
     policyStatus = policy['status']
     for status in states:
         status = status.to_dict()
-        if status.get('id') == policyStatus:
+        if str(status.get('id')) == policyStatus:
             policy['status'] = status
     return policy
 
@@ -93,6 +93,7 @@ def policyNames(user_policies,states):
         Userpolicy_dict['name'] = policy.name
         Userpolicy_dict['description'] = policy.description
         Userpolicy_dict = set_status(states,Userpolicy_dict)
+        print(Userpolicy_dict)
         newList.append(Userpolicy_dict)
 
     return newList

@@ -3,6 +3,7 @@ from flask_login import login_required, login_user,current_user
 from flask_sqlalchemy import SQLAlchemy
 import flask
 from models.status import status
+from models.claim import claim
 from policyBP import Policy
 from adminBP import policyNames
 from userPolicyBP import UserPolicy
@@ -157,7 +158,8 @@ def register_page():
             email=form.email.data,
             address=form.address.data,
             password=form.password.data,
-            gender=form.gender.data
+            gender=form.gender.data,
+            role = 'client'
             )
         #try connect to database
         try:
@@ -283,3 +285,55 @@ def user_policy():
                 }
             return render_template("success.html",message=message)
     return render_template('applyPolicy.html', form=form)
+
+class ClaimForm(FlaskForm):
+    userPolicy = SelectField('User Policy', validators=[InputRequired()])
+    claimDate = StringField('Claim Date', validators=[InputRequired()])
+    claimAmount = StringField('Claim Amount', validators=[InputRequired()])
+    claimDescription = StringField('Claim Description', validators=[InputRequired()])
+    claimStatus = StringField('Claim Status')
+    submit = SubmitField('Submit')
+
+@users_bp.route('/claim', methods=['GET', 'POST'])
+@login_required
+def user_claim():
+    print(request.method)
+    form = ClaimForm()
+    Userpolicy_options = [(policy.userPolicy_ID, f"{policy.policyID} - {policy.assetDecription} - Covered for R{policy.coverage}") for policy in UserPolicy.query.filter_by(userID= current_user.id ).all()]
+    form.userPolicy.choices = Userpolicy_options
+    print("Kinda-Working")
+    if form.validate_on_submit():
+        print('Please')
+        # Create a new UserPolicy object and populate it with form data
+        user_policy = claim(
+            userPolicy_ID=form.userPolicy.data,
+            claimDate=form.claimDate.data,
+            claimAmount=form.claimAmount.data,
+            claimDescription=form.claimDescription.data,
+            claimStatus='2'
+        )
+        try:
+            # Add the new UserPolicy object to the database session
+            print("Working")
+            db.session.add(user_policy)
+            db.session.commit()
+            message ={
+                "message":"Policy Applied Successfully.",
+                "success":True,
+                "action":"View User",
+                "URL": f"user/{current_user.id}",
+                "data":user_policy
+            }
+            return render_template("success.html",message=message)  # Redirect to a success page after form submission
+        except Exception as e:
+            db.session.rollback()
+            message ={
+            "message":"Error Adding User to DB.",
+            "success":False,
+            "data":str(e)
+                }
+            return render_template("success.html",message=message)
+    else:
+        print("neeeh")
+        print(form.errors)
+    return render_template('claim.html', form=form)

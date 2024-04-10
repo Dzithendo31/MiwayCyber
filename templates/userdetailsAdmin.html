@@ -136,6 +136,7 @@
                 {%if current_user.role == 'admin'%}
                 <div class="buttons">
                     <a href="/admin/approve_policy/{{policy.userPolicy_ID}}" class="button">Approve</a>
+                    <a href="/admin/approve_policy/{{policy.userPolicy_ID}}" class="button">Decline</a>
                 </div>
                 {% endif %}
             </div>
