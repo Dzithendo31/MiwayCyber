@@ -4,9 +4,9 @@ from flask_sqlalchemy import SQLAlchemy
 import flask
 from models.status import status
 from models.claim import claim
-from policyBP import Policy
-from adminBP import policyNames
-from userPolicyBP import UserPolicy
+from routes.policyBP import Policy
+from routes.adminBP import policyNames,claimstatus
+from models.userPolicy import UserPolicy
 from extensions import db
 from models.user import User
 from flask_wtf import FlaskForm
@@ -108,14 +108,15 @@ def user_detail_page(id):
     filtered_user = User.query.get(id)
     #Then you can query the Policies Database base on the ID to find the client's polices
     user_policies = UserPolicy.query.filter_by(userID=id).all()
+    claims = claim.query.filter_by(userID=id).all()
     #get all status data
     states = status.query.all()
     pols = policyNames(user_policies,states)
-    print(pols)
+    claims = claimstatus(claims,states)
     #Add the polic Names
     if filtered_user:
         data = filtered_user.to_dict()
-        return render_template("userdetailsAdmin.html", user=data,policies =pols,states=states)
+        return render_template("userdetailsAdmin.html", user=data,policies =pols,states=states,claims=claims)
     else:
         message ={
           "message":"Error Adding User to DB.",
@@ -166,10 +167,10 @@ def register_page():
             db.session.add(new_user)
             db.session.commit()
             message ={
-                "message":"User Added Successfully.",
+                "message":"User Register Successfully.",
                 "success":True,
-                "action":"View User",
-                "URL": f"policy/{new_user.id}",
+                "action":"Log In",
+                "URL": f"Log In",
                 "data":new_user
             }
             return render_template("success.html",message=message)
@@ -299,7 +300,7 @@ class ClaimForm(FlaskForm):
 def user_claim():
     print(request.method)
     form = ClaimForm()
-    Userpolicy_options = [(policy.userPolicy_ID, f"{policy.policyID} - {policy.assetDecription} - Covered for R{policy.coverage}") for policy in UserPolicy.query.filter_by(userID= current_user.id ).all()]
+    Userpolicy_options = [(policy.userPolicy_ID, f"{policy.policyID} - {policy.assetDecription} - Covered for R{policy.coverage}") for policy in UserPolicy.query.filter_by(userID= current_user.id ).filter_by(status='3').all()]
     form.userPolicy.choices = Userpolicy_options
     print("Kinda-Working")
     if form.validate_on_submit():
@@ -307,6 +308,7 @@ def user_claim():
         # Create a new UserPolicy object and populate it with form data
         user_policy = claim(
             userPolicy_ID=form.userPolicy.data,
+            userID = current_user.id,
             claimDate=form.claimDate.data,
             claimAmount=form.claimAmount.data,
             claimDescription=form.claimDescription.data,
@@ -317,6 +319,12 @@ def user_claim():
             print("Working")
             db.session.add(user_policy)
             db.session.commit()
+
+            #Update the Policy to Claimed
+            policy = UserPolicy.query.get(form.userPolicy.data)
+            if policy:
+                policy.status = "5"
+                db.session.commit()
             message ={
                 "message":"Policy Applied Successfully.",
                 "success":True,

@@ -9,14 +9,14 @@
     {{ form.hidden_tag() }}
 
     {% for field in form if field.type != 'SubmitField' %}
-    {% if field.name == 'date_of_birth' %}
+            {% if field.name == 'date_of_birth' %}
             {{ field.label }}: <input type="date" name="{{ field.name }}" placeholder="{{ field.label.text }}" {% if field.data %}value="{{ field.data.strftime('%Y-%m-%d') }}"{% endif %} required>
             {% endif %}
             {% if field.errors %}
             {% for error in field.errors %}
                 <div style="color: crimson;">{{ error }}</div>
             {% endfor %}
-        {% endif %}
+            {% endif %}
         
         {{ field.label }}: {{ field(placeholder=field.label.text,class_="form-control") }}
         <br>

@@ -1,10 +1,11 @@
 from flask import Flask, jsonify, request, render_template, Blueprint
 from flask_sqlalchemy import SQLAlchemy
 from models.user import User
+from models.claim import claim
 from models.status import status
 from extensions import db
-from userPolicyBP import UserPolicy
-from policyBP import Policy
+from models.userPolicy import UserPolicy
+from routes.policyBP import Policy
 from flask_wtf import FlaskForm
 from wtforms import StringField,  SubmitField
 from wtforms.validators import InputRequired, ValidationError
@@ -37,13 +38,14 @@ def user_detail_page(id):
     #Then you can query the Policies Database base on the ID to find the client's polices
     user_policies = UserPolicy.query.filter_by(userID=id).all()
     #get all status data
+    claims = claim.query.filter_by(userID=id).all()
     states = status.query.all()
     pols = policyNames(user_policies,states)
-    print(pols)
+    claims = claimstatus(claims,states)
     #Add the polic Names
     if filtered_user:
         data = filtered_user.to_dict()
-        return render_template("userdetailsAdmin.html", user=data,policies =pols,states=states)
+        return render_template("userdetailsAdmin.html", user=data,policies =pols,states=states,claims=claims)
     else:
         message ={
           "message":"Error Adding User to DB.",
@@ -61,11 +63,61 @@ def approve_policy(policy_id):
             policy.status = "3"
             db.session.commit()
         message ={
-                    "message":"User Added Successfully.",
+                    "message":"Policy Approved Successfully.",
                     "success":True,
                     "action":"View User",
-                    "URL": f"policy/{policy.userID}",
+                    "URL": f"user/{policy.userID}",
                     "data":policy
+                }
+        return render_template("success.html",message=message)
+    
+
+@adminBP.route("/decline_policy/<policy_id>", methods=['POST'])
+def decline_policy(policy_id):
+    if request.method == 'POST':
+        policy = UserPolicy.query.get(policy_id)
+        if policy:
+            policy.status = "4"
+            db.session.commit()
+        message ={
+                    "message":"Policy Declined Successfully.",
+                    "success":True,
+                    "action":"View User",
+                    "URL": f"user/{policy.userID}",
+                    "data":policy
+                }
+        return render_template("success.html",message=message)
+    
+# Claims Aprroval and Decline
+@adminBP.route("/approve_claim/<claim_id>", methods=['POST'])
+def approve_claim(claim_id):
+    if request.method == 'POST':
+        claimX = claim.query.get(claim_id)
+        if claimX:
+            claimX.claimStatus = "3"
+            db.session.commit()
+        message ={
+                    "message":"Policy Approved Successfully.",
+                    "success":True,
+                    "action":"View User",
+                    "URL": f"user/{claimX.userID}",
+                    "data":claimX
+                }
+        return render_template("success.html",message=message)
+    
+@adminBP.route("/decline_claim/<claim_id>", methods=['POST'])
+def decline_claim(claim_id):
+    if request.method == 'POST':
+        claimX = claim.query.get(claim_id)
+        if claimX:
+            claimX.claimStatus = "4"
+            db.session.commit()
+        message ={
+                    "message":"Policy Approved Successfully.",
+                    "success":True,
+                    "action":"View User",
+                    "URL": f"user/{claimX.userID}",
+                    "data":claimX
                 }
         return render_template("success.html",message=message)
 #Monthly Premium = (Coverage Value * Risk Assessment Factor) + Administrative Costs + Profit Margin
@@ -73,6 +125,14 @@ def calculate_premium(riskFactor,policy):
     cover = policy.coverage
     premium = (cover*riskFactor) + 22 + (cover*riskFactor)*0.20
     return premium
+
+def claimstatus(claims,states):
+    newList = []
+    for claim in claims:
+        C = claim.to_dict()
+        C = set_statusC(states,C)
+        newList.append(C)
+    return newList
 
 
 def set_status(states,policy):
@@ -83,6 +143,13 @@ def set_status(states,policy):
             policy['status'] = status
     return policy
 
+def set_statusC(states,claim):
+    claimStatus = claim['claimStatus']
+    for status in states:
+        status = status.to_dict()
+        if str(status.get('id')) == claimStatus:
+            claim['claimStatus'] = status
+    return claim
 
 def policyNames(user_policies,states):
     newList =[]
@@ -108,7 +175,14 @@ def policy_detail_page(id):
         data = filtered_policy.to_dict()
         return render_template("policydetailsAdmin.html", policy=data,user="admin")
     else:
-        return "<h1>Movie not found</h1>"    
+        message ={
+                    "message":"Access Denied Successfully.",
+                    "success":True,
+                    "action":"View User",
+                    "URL": f"/",
+                    "data":{}
+                }
+        return render_template("success.html",message=message)   
 
 
 @adminBP.route("/addUser", methods=["GET"])

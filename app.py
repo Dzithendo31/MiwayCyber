@@ -5,11 +5,10 @@ from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.sql import text
 from dotenv import load_dotenv
 from models.user import User
-from policyBP import Policy
-from usersBP import users_bp
-from userslistBP import users_list_bp
-from policyBP import policy_bp
-from adminBP import adminBP
+from routes.policyBP import Policy
+from routes.usersBP import users_bp
+from routes.policyBP import policy_bp
+from routes.adminBP import adminBP
 
 #Import the DB
 from extensions import db
@@ -30,11 +29,7 @@ login_manager.init_app(app)
 def load_user(user_id):
     return User.query.get(user_id)
 
-
-
- 
-app.register_blueprint(users_bp) 
-app.register_blueprint(users_list_bp, url_prefix = "/usersList") 
+app.register_blueprint(users_bp)  
 app.register_blueprint(policy_bp, url_prefix = "/policies") 
 app.register_blueprint(adminBP, url_prefix = "/admin") 
 @app.route("/")

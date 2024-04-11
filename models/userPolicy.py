@@ -1,10 +1,5 @@
-from flask import render_template, Blueprint,redirect, url_for
-from flask_sqlalchemy import SQLAlchemy
 import uuid
 from extensions import db
-
-User_policy_bp = Blueprint('User_policy_bp',__name__)
-
 
 class UserPolicy(db.Model):
     __tablename__ = "userPolicy"
@@ -16,8 +11,8 @@ class UserPolicy(db.Model):
     startDate = db.Column(db.String(50))
     endDate = db.Column(db.String(50))
     assetValue = db.Column(db.Float)
-    assetDecription = db.Column(db.String(255))
-    assetSecurity = db.Column(db.String(255))
+    assetDecription = db.Column(db.String(1000))
+    assetSecurity = db.Column(db.String(1000))
     clientDeclaration = db.Column(db.String(255))
     premium = db.Column(db.Float)
 

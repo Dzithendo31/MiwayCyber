@@ -116,34 +116,82 @@
         </div>
         <div>
             <h2 style="text-align: center;">Client's Policies</h2>
+            <p class="clientsNo">{{policies|length}}</p>
         </div>
 
         <div class="policies">
             {% for policy in policies %}
             <div class="policy">
                 <h6 class="hgservices" style="color: black;">{{policy.name}}</h6>
+                <p class="address" style="color: rgb(196, 0, 0);"> ID: {{policy.userPolicy_ID }}</p>
                 <p class="boxR" style="background-color: {{policy.status.color}};">{{policy.status.name}}</p>
                 <h6 style="color: rgb(196, 0, 0);">at R{{policy.coverage*0.02+22}}pm.</h6>
                 <p class="address">{{policy.description}}</p>
-                <h3 style="color: #2c2c2c;"> 
-                    R{{policy.coverage}} 
+                <h3 style="color: #2c2c2c;">
+                    R{{policy.coverage}}
                 </h3>
-
                 <h6 style="color: #2c2c2c;">Asset Description</h6>
                 <p class="address">{{policy.assetDescription}}</p>
                 <h6 style="color: #2c2c2c;">Asset Security Measures</h6>
                 <p class="address">{{policy.assetSecurity}}</p>
                 {%if current_user.role == 'admin'%}
                 <div class="buttons">
-                    <a href="/admin/approve_policy/{{policy.userPolicy_ID}}" class="button">Approve</a>
-                    <a href="/admin/approve_policy/{{policy.userPolicy_ID}}" class="button">Decline</a>
+                    <form action="/admin/approve_policy/{{ policy.userPolicy_ID }}" method="post">
+                        <input type="submit" value="Approve" class="button" />
+                    </form>
+                    <form action="/admin/decline_policy/{{ policy.userPolicy_ID }}" method="post">
+                        <input type="submit" value="Decline" class="button" />
+                    </form>
+                </div>
+                {% endif %}
+                {%if current_user.role == 'client' and policy.status.name == 'Approved'%}
+                <div class="buttons">
+                    <form action="/claim" method="post">
+                        <input type="submit" value="Claim" class="button" />
+                    </form>
                 </div>
                 {% endif %}
             </div>
             {% endfor %}
         </div>
+        <div>
+            <h2 style="text-align: center; margin: 30px 0px">Client's Claims</h2>
+            <p class="clientsNo">{{claims|length}}</p>
+        </div>
+        <div class="policies">
+            {% for claim in claims %}
+            {% for policy in policies %}
+            {%if policy.userPolicy_ID == claim.userPolicy_ID%}
+            <div class="policy">
+                <h6 class="hgservices" style="color: black;">{{policy.name}}</h6>
+                <p class="address" style="color: rgb(196, 0, 0);"> ID: {{policy.userPolicy_ID }}</p>
+                <p class="boxR" style="background-color: {{claim.claimStatus.color}};">{{claim.claimStatus.name}}</p>
+                <p class="address">{{claim.claimDescription}}</p>
+                <h6 style="color: rgb(196, 0, 0);">claiming for:</h6>
+                <h3 style="color: #2c2c2c;">
+                    R{{claim.claimAmount}}
+                </h3>
+
+                <h6 style="color: #2c2c2c;">Claim Date</h6>
+                <p class="address">{{claim.claimDate}}</p>
+                {%if current_user.role == 'admin'%}
+                <div class="buttons">
+                    <form action="/admin/approve_claim/{{ claim.claim_ID }}" method="post">
+                        <input type="submit" value="Approve" class="button" />
+                    </form>
+                    <form action="/admin/decline_claim/{{ claim.claim_ID }}" method="post">
+                        <input type="submit" value="Decline" class="button" />
+                    </form>
+                </div>
+                {% endif %}
+
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% endfor %}
+        </div>
         <div class="statusInfo">
-            <h3>Understanding Your Policy Status</h3>
+            <h3>Understanding Your Policy and Claim Status</h3>
             {% for status in states %}
             <p class="boxR " style="background-color: {{status.color}};">{{status.name}}</p>
             <p class="address" style="padding: 0px 80px;">{{status.description}}</p>
